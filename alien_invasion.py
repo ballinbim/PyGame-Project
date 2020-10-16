@@ -20,13 +20,6 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         fire_bullet(ai_settings, screen, ship, bullets)
     elif event.key == pygame.K_q: 
         sys.exit()
-
-def fire_bullet(ai_settings, screen, ship, bullets):
-    """Fire a bullet if limit not reached yet."""
-    # Create a new bullet and add it to the bullets group. 
-    if len(bullets) < ai_settings.bullets_allowed:
-        new_bullet = Bullet(ai_settings, screen, ship) 
-        bullets.add(new_bullet)
         
 def check_keyup_events(event, ship):
     if event.key == pygame.K_RIGHT:
@@ -47,7 +40,6 @@ def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bull
             mouse_x, mouse_y = pygame.mouse.get_pos() 
             check_play_button(ai_settings, screen, stats, sb, play_button, ship,
                 aliens, bullets, mouse_x, mouse_y)
-
 
 def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button):
     """Update images on the screen and flip to the new screen.""" 
@@ -71,15 +63,22 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
     # Make the most recently drawn screen visible. 
     pygame.display.flip()
 
+def fire_bullet(ai_settings, screen, ship, bullets):
+    """Fire a bullet if limit not reached yet."""
+    # Create a new bullet and add it to the bullets group. 
+    if len(bullets) < ai_settings.bullets_allowed:
+        new_bullet = Bullet(ai_settings, screen, ship) 
+        bullets.add(new_bullet)
+
 def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """Update position of bullets and get rid of old bullets.""" 
     # Update bullet positions.
     bullets.update()
     # Check for any bullets that have hit aliens.
     # If so, get rid of the bullet and the alien.
-    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    # collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     
-        # Get rid of bullets that have disappeared. 
+    # Get rid of bullets that have disappeared. 
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0: 
             bullets.remove(bullet)
@@ -96,7 +95,6 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
     """Respond to bullet-alien collisions."""
     # Remove any bullets and aliens that have collided.
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
-
     if collisions:
         for aliens in collisions.values():
             stats.score += ai_settings.alien_points * len(aliens)
@@ -114,7 +112,6 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     available_space_y = (ai_settings.screen_height- (3 * alien_height)- ship_height)
     number_rows = int(available_space_y / (2 * alien_height))
     return number_rows
-
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     '''Create an alien and place it in the row.'''
@@ -266,10 +263,10 @@ def run_game():
         
         update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
             
-        # Redraw the screen during each pass through the loop. 
-        screen.fill(ai_settings.bg_color)
-        ship.blitme()
+        # # Redraw the screen during each pass through the loop. 
+        # screen.fill(ai_settings.bg_color)
+        # ship.blitme()
             
-        # Make the most recently drawn screen visible. 
-        pygame.display.flip()
+        # # Make the most recently drawn screen visible. 
+        # pygame.display.flip()
 run_game()
