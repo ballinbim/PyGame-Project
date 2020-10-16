@@ -7,18 +7,19 @@ class Ship(Sprite):
         super(Ship, self).__init__()
         self.screen = screen
         self.ai_settings = ai_settings
+        self.screen_rect = screen.get_rect()
+
         
         # Load the ship image and get its rect. 
         self.image = pygame.image.load('ship.bmp') 
         self.rect = self.image.get_rect() 
-        self.screen_rect = screen.get_rect()
         
         # Start each new ship at the bottom center of the screen. 
-        self.rect.centerx = self.screen_rect.centerx 
-        self.rect.bottom = self.screen_rect.bottom
+        self.rect.midbottom = self.screen_rect.midbottom
+
 
         # Store a decimal value for the ship's center.
-        self.center = float(self.rect.centerx)
+        self.x = float(self.rect.x)
 
         # Movement flag 
         self.moving_right = False
@@ -28,12 +29,12 @@ class Ship(Sprite):
         """Update the ship's position based on the movement flag.""" 
         # Update the ship's center value, not the rect
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.center += self.ai_settings.ship_speed_factor
+            self.x += self.ai_settings.ship_speed_factor
         if self.moving_left and self.rect.left > 0:
-            self.center -= self.ai_settings.ship_speed_factor
+            self.x -= self.ai_settings.ship_speed_factor
 
         # Update rect object from self.center.
-        self.rect.centerx = self.center
+        self.rect.x = self.x
 
     def blitme(self):
         """Draw the ship at its current location.""" 
@@ -41,4 +42,5 @@ class Ship(Sprite):
 
     def center_ship(self):
         """Center the ship on the screen.""" 
-        self.center = self.screen_rect.centerx
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)

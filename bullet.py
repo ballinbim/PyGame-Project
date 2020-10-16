@@ -6,11 +6,10 @@ class Bullet(Sprite):
     
     def __init__(self, ai_settings, screen, ship):
         """Create a bullet object at the ship's current position.""" 
-        super(Bullet, self).__init__()
+        super().__init__()
         self.screen = screen
-        # The call super(Bullet, self).__init__() uses Python 2.7 syntax. This works in Python 3 too, 
-        # or you can also write this call more simply as super().__init__().
-
+        self.settings = ai_settings
+        self.color = self.settings.bullet_color
 
         # Create a bullet rect at (0, 0) and then set correct position. 
         self.rect = pygame.Rect(0, 0, ai_settings.bullet_width,
